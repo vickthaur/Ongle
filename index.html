@@ -290,7 +290,7 @@
 </main>
 
 <script>
-  const ENDPOINT = "https://formsubmit.co/ajax/victordetroux2@gmail.com";
+  const ENDPOINT = "https://formspree.io/f/mwvrlvko";
 
   const form   = document.getElementById("rdvForm");
   const btn    = document.getElementById("submitBtn");
@@ -317,9 +317,8 @@
         headers: { "Content-Type": "application/json", "Accept": "application/json" },
         body: JSON.stringify({
           ...data,
-          _subject: "💅 Nouvelle demande de RDV — " + data["Prénom"] + " " + data["Nom"],
-          _template: "table",
-          _captcha: "false"
+          _replyto: data["Email"],
+          _subject: "💅 Nouvelle demande de RDV — " + data["Prénom"] + " " + data["Nom"]
         })
       });
 
