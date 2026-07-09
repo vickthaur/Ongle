@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prendre rendez-vous — Prothésiste ongulaire</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,560;1,9..144,420&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --milk:      #FBF4F1;   /* base laiteuse */
+    --porcelain: #FFFFFF;
+    --ink:       #3A2130;   /* prune encre */
+    --wine:      #8E2C46;   /* vernis framboise profond */
+    --wine-deep: #6E1F36;
+    --blush:     #F3DFDB;
+    --gold:      #C6A272;
+    --err:       #B3261E;
+    --ok:        #2E6B4F;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html{ -webkit-font-smoothing:antialiased; }
+
+  body{
+    font-family:'Jost',sans-serif;
+    background:
+      radial-gradient(1200px 600px at 85% -10%, #F6E4DF 0%, transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, #F1E0E6 0%, transparent 55%),
+      var(--milk);
+    color:var(--ink);
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:48px 20px;
+  }
+
+  .card{
+    width:100%;
+    max-width:520px;
+    background:var(--porcelain);
+    border-radius:28px;
+    box-shadow:
+      0 1px 2px rgba(58,33,48,.06),
+      0 24px 60px -24px rgba(110,31,54,.25);
+    overflow:hidden;
+    animation:rise .7s cubic-bezier(.22,1,.36,1) both;
+  }
+
+  @keyframes rise{
+    from{ opacity:0; transform:translateY(18px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+
+  /* ——— bandeau "vernis" : la signature ——— */
+  .lacquer{
+    height:120px;
+    position:relative;
+    background:linear-gradient(120deg, var(--wine-deep) 0%, var(--wine) 55%, #B04862 100%);
+    overflow:hidden;
+  }
+  .lacquer::before{           /* reflet gel glossy */
+    content:"";
+    position:absolute;
+    inset:-40% -10% auto -10%;
+    height:75%;
+    background:linear-gradient(180deg, rgba(255,255,255,.38), rgba(255,255,255,0));
+    border-radius:0 0 50% 50% / 0 0 100% 100%;
+  }
+  .lacquer::after{            /* goutte qui coule */
+    content:"";
+    position:absolute;
+    left:14%;
+    bottom:-26px;
+    width:52px;
+    height:52px;
+    background:inherit;
+    background:linear-gradient(120deg, var(--wine-deep), var(--wine));
+    border-radius:0 0 50% 50%;
+  }
+  .lacquer h1{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Fraunces',serif;
+    font-weight:560;
+    font-size:clamp(24px,5vw,30px);
+    letter-spacing:.5px;
+    color:#FFF6F3;
+    text-align:center;
+    padding:0 24px;
+  }
+
+  .inner{ padding:44px 36px 36px; }
+
+  .lead{
+    font-size:15px;
+    font-weight:300;
+    color:#7A5A6B;
+    text-align:center;
+    margin-bottom:30px;
+    line-height:1.55;
+  }
+  .lead em{
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    color:var(--wine);
+  }
+
+  form{ display:grid; gap:20px; }
+
+  .row{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media (max-width:440px){ .row{ grid-template-columns:1fr; } }
+
+  .field{ position:relative; }
+
+  label{
+    display:block;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:#9A7386;
+    margin-bottom:7px;
+  }
+
+  input{
+    width:100%;
+    font:inherit;
+    font-size:16px;
+    color:var(--ink);
+    background:var(--milk);
+    border:1.5px solid transparent;
+    border-radius:14px;
+    padding:13px 16px;
+    transition:border-color .2s, background .2s, box-shadow .2s;
+  }
+  input::placeholder{ color:#C4A9B4; font-weight:300; }
+  input:focus{
+    outline:none;
+    background:#fff;
+    border-color:var(--wine);
+    box-shadow:0 0 0 4px rgba(142,44,70,.10);
+  }
+  input:user-invalid{ border-color:var(--err); }
+
+  .hint{
+    font-size:12px;
+    color:var(--err);
+    margin-top:5px;
+    display:none;
+  }
+  input:user-invalid ~ .hint{ display:block; }
+
+  button{
+    margin-top:6px;
+    font-family:'Jost',sans-serif;
+    font-size:16px;
+    font-weight:600;
+    letter-spacing:.04em;
+    color:#FFF6F3;
+    background:linear-gradient(120deg, var(--wine-deep), var(--wine) 60%, #A94060);
+    border:none;
+    border-radius:16px;
+    padding:16px;
+    cursor:pointer;
+    position:relative;
+    overflow:hidden;
+    transition:transform .15s, box-shadow .2s;
+    box-shadow:0 12px 28px -12px rgba(110,31,54,.55);
+  }
+  button::after{               /* reflet glossy sur le bouton */
+    content:"";
+    position:absolute;
+    inset:0 0 55% 0;
+    background:linear-gradient(180deg, rgba(255,255,255,.28), rgba(255,255,255,0));
+    border-radius:16px 16px 40% 40%;
+    pointer-events:none;
+  }
+  button:hover{ transform:translateY(-2px); box-shadow:0 16px 34px -12px rgba(110,31,54,.6); }
+  button:active{ transform:translateY(0); }
+  button:disabled{ opacity:.6; cursor:wait; transform:none; }
+
+  .note{
+    text-align:center;
+    font-size:12.5px;
+    font-weight:300;
+    color:#A98D9B;
+    margin-top:4px;
+  }
+
+  /* ——— confirmation ——— */
+  .success{
+    display:none;
+    text-align:center;
+    padding:20px 4px 6px;
+    animation:rise .5s cubic-bezier(.22,1,.36,1) both;
+  }
+  .success .ring{
+    width:64px; height:64px;
+    margin:0 auto 18px;
+    border-radius:50%;
+    background:rgba(46,107,79,.1);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--ok);
+  }
+  .success h2{
+    font-family:'Fraunces',serif;
+    font-weight:560;
+    font-size:24px;
+    margin-bottom:10px;
+  }
+  .success p{ font-size:15px; font-weight:300; color:#7A5A6B; line-height:1.6; }
+
+  .error-banner{
+    display:none;
+    background:#FBEAE9;
+    color:var(--err);
+    border-radius:12px;
+    padding:12px 16px;
+    font-size:14px;
+    text-align:center;
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    .card,.success{ animation:none; }
+    button{ transition:none; }
+  }
+</style>
+</head>
+<body>
+
+<main class="card">
+  <div class="lacquer">
+    <h1>Prendre rendez-vous</h1>
+  </div>
+
+  <div class="inner">
+    <p class="lead">Laissez vos coordonnées, votre <em>prothésiste ongulaire</em> vous recontacte pour fixer l'heure de votre séance.</p>
+
+    <div class="error-banner" id="errorBanner">
+      L'envoi n'a pas fonctionné. Vérifiez votre connexion et réessayez.
+    </div>
+
+    <form id="rdvForm" novalidate>
+      <div class="row">
+        <div class="field">
+          <label for="prenom">Prénom</label>
+          <input type="text" id="prenom" name="Prénom" placeholder="Camille" required autocomplete="given-name">
+          <p class="hint">Indiquez votre prénom.</p>
+        </div>
+        <div class="field">
+          <label for="nom">Nom</label>
+          <input type="text" id="nom" name="Nom" placeholder="Durand" required autocomplete="family-name">
+          <p class="hint">Indiquez votre nom.</p>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" name="Email" placeholder="camille.durand@mail.fr" required autocomplete="email">
+        <p class="hint">Adresse e-mail invalide.</p>
+      </div>
+
+      <div class="field">
+        <label for="tel">Téléphone</label>
+        <input type="tel" id="tel" name="Téléphone" placeholder="06 12 34 56 78" required
+               autocomplete="tel" inputmode="tel"
+               pattern="^(\+33\s?|0)[1-9]([ .\-]?\d{2}){4}$">
+        <p class="hint">Numéro invalide (format : 06 12 34 56 78).</p>
+      </div>
+
+      <button type="submit" id="submitBtn">Envoyer ma demande</button>
+      <p class="note">Réponse sous 24 h ouvrées · Vos données ne sont jamais partagées.</p>
+    </form>
+
+    <div class="success" id="successBox">
+      <div class="ring">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h2>Demande envoyée&nbsp;!</h2>
+      <p>Merci <span id="successName"></span>&nbsp;— votre demande de rendez-vous a bien été transmise.<br>Vous recevrez une confirmation très vite.</p>
+    </div>
+  </div>
+</main>
+
+<script>
+  const ENDPOINT = "https://formsubmit.co/ajax/victordetroux2@gmail.com";
+
+  const form   = document.getElementById("rdvForm");
+  const btn    = document.getElementById("submitBtn");
+  const okBox  = document.getElementById("successBox");
+  const errBox = document.getElementById("errorBanner");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    errBox.style.display = "none";
+
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = "Envoi en cours…";
+
+    const data = Object.fromEntries(new FormData(form).entries());
+
+    try {
+      const res = await fetch(ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({
+          ...data,
+          _subject: "💅 Nouvelle demande de RDV — " + data["Prénom"] + " " + data["Nom"],
+          _template: "table",
+          _captcha: "false"
+        })
+      });
+
+      if (!res.ok) throw new Error("HTTP " + res.status);
+
+      document.getElementById("successName").textContent = data["Prénom"];
+      form.style.display = "none";
+      document.querySelector(".lead").style.display = "none";
+      okBox.style.display = "block";
+    } catch (err) {
+      errBox.style.display = "block";
+      btn.disabled = false;
+      btn.textContent = "Envoyer ma demande";
+    }
+  });
+</script>
+
+</body>
+</html>
